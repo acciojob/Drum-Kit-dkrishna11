@@ -1,15 +1,23 @@
-//your JS code here. If required.
+const keys = Array.from(document.querySelectorAll('.key'));
+const audios = Array.from(document.querySelectorAll('audio'));
+
 function playSound(e) {
+  const key = document.querySelector(`.key[data-key="${e.keyCode}"]`);
   const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
-  const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
-  
+
   if (!audio) return;
-  
-  audio.currentTime = 0; // Rewind to the start
+
+  audio.currentTime = 0;
   audio.play();
-  
-  key.classList.add('playing');
+
+  key.classList.add('audio-playing');
 }
 
-function removeTransition(e) {
+function removeAudioPlayingClass(e) {
   if (e.propertyName !== 'transform') return;
+  
+  this.classList.remove('audio-playing');
+}
+
+keys.forEach(key => key.addEventListener('transitionend', removeAudioPlayingClass));
+window.addEventListener('keydown', playSound);
